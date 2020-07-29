@@ -11,12 +11,12 @@ router.use(bodyParser.json());
 
 authenticate.local;
 
-router.get('/', (req,res,next) => {
+router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, (req,res,next) => {
   User.find({})
-  .then((promos) => {
+  .then((users) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.json(promos);
+      res.json(users);
   }, (err) => next(err))
   .catch((err) => next(err));
 })
